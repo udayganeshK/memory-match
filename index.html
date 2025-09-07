@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Match Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Main Menu Screen -->
+        <div id="main-menu" class="screen active">
+            <h1 class="title">Memory Match</h1>
+            
+            <!-- Category Bubbles -->
+            <div class="category-bubbles">
+                <div class="bubble places-bubble">
+                    <div class="bubble-content">
+                        <div class="landmarks">
+                            <div class="landmark eiffel-tower"></div>
+                            <div class="landmark pagoda"></div>
+                            <div class="landmark building"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bubble sports-bubble">
+                    <div class="bubble-content">
+                        <div class="sports-field">
+                            <div class="field"></div>
+                            <div class="basketball"></div>
+                            <div class="soccer-ball"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bubble animals-bubble">
+                    <div class="bubble-content">
+                        <div class="animals">
+                            <div class="animal lion"></div>
+                            <div class="animal monkey"></div>
+                            <div class="animal elephant"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category Selection -->
+            <div class="category-selection">
+                <div class="category-option" data-category="places">
+                    <div class="category-icon places-icon">🌍</div>
+                    <span>Places</span>
+                </div>
+                
+                <div class="category-option" data-category="sports">
+                    <div class="category-icon sports-icon">🏆</div>
+                    <span>Sports</span>
+                </div>
+                
+                <div class="category-option" data-category="animals">
+                    <div class="category-icon animals-icon">🐾</div>
+                    <span>Animals</span>
+                </div>
+            </div>
+            
+            <button id="play-btn" class="play-button" disabled>Play Now</button>
+        </div>
+        
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <button id="back-btn" class="back-button">← Back</button>
+                <div class="game-info">
+                    <span id="moves-count">Moves: 0</span>
+                    <span id="timer">Time: 00:00</span>
+                </div>
+            </div>
+            
+            <div id="game-board" class="game-board"></div>
+            
+            <div class="game-controls">
+                <button id="restart-btn" class="control-button">Restart</button>
+                <button id="hint-btn" class="control-button">Hint</button>
+            </div>
+        </div>
+        
+        <!-- Win Screen -->
+        <div id="win-screen" class="screen">
+            <div class="win-content">
+                <h2>🎉 Congratulations!</h2>
+                <p>You completed the game!</p>
+                <div class="win-stats">
+                    <p>Moves: <span id="final-moves">0</span></p>
+                    <p>Time: <span id="final-time">00:00</span></p>
+                    <p>Score: <span id="final-score">0</span></p>
+                </div>
+                <div class="win-buttons">
+                    <button id="play-again-btn" class="play-button">Play Again</button>
+                    <button id="menu-btn" class="control-button">Main Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
