@@ -5,8 +5,9 @@ A beautiful and interactive memory card matching game built with vanilla HTML, C
 ## ✨ Key Features
 
 - **Three Themed Categories**: Places (🌍), Sports (🏆), and Animals (🐾)
-- **Dynamic Content**: 16+ items per category with 8 randomly selected each game
-- **Intelligent Scoring**: Weighted scoring system (70% moves, 30% time)
+- **Multiple Difficulty Levels**: Easy (4×4), Medium (5×5), Hard (6×6)
+- **Dynamic Content**: 16+ items per category with random selection each game
+- **Intelligent Scoring**: Weighted scoring system adjusted for difficulty
 - **Tile Labeling**: Click any card to see the name with animated labels
 - **Beautiful UI**: Glassmorphism design with gradient backgrounds
 - **Game Statistics**: Real-time move counter and timer
@@ -17,18 +18,26 @@ A beautiful and interactive memory card matching game built with vanilla HTML, C
 ## 🚀 How to Play
 
 1. **Select a Category**: Choose from Places, Sports, or Animals
-2. **Click Play Now**: Start the memory matching game
-3. **Find Matches**: Click cards to flip them and find matching pairs
-4. **Win the Game**: Match all pairs to complete the level
-5. **Track Progress**: Monitor your moves and time as you play
+2. **Choose Difficulty**: Pick Easy (4×4), Medium (5×5), or Hard (6×6)
+3. **Click Play Now**: Start the memory matching game
+4. **Find Matches**: Click cards to flip them and find matching pairs
+5. **Win the Game**: Match all pairs to complete the level
+6. **Track Progress**: Monitor your moves and time as you play
 
 ## 🎯 Scoring System
 
-The game uses an intelligent scoring algorithm:
+The game uses an intelligent scoring algorithm that adapts to difficulty:
+
+### Base Scores by Difficulty
+- **Easy (4×4)**: 1000 points base
+- **Medium (5×5)**: 1500 points base  
+- **Hard (6×6)**: 2000 points base
+
+### Scoring Formula
 - **Move Efficiency**: 70% weight - fewer moves = higher score
 - **Time Efficiency**: 30% weight - faster completion = higher score
 - **Penalties**: Using hints adds to your move count
-- **Bonus Points**: Quick consecutive matches get bonus multipliers
+- **Target Times**: 30s (Easy), 45s (Medium), 60s (Hard)
 
 ## 🏗️ Project Structure
 
@@ -164,13 +173,14 @@ This project is open source and available under the MIT License.
 
 ## 🎯 Future Enhancements
 
-- [ ] Multiple difficulty levels (4x4, 6x6 grids)
 - [ ] Leaderboard with local storage
 - [ ] Sound effects and background music
 - [ ] Multiplayer mode
 - [ ] Custom category creation
 - [ ] Achievement system
 - [ ] Dark/light theme toggle
+- [ ] Additional grid sizes (3×3, 8×8)
+- [ ] Timed challenge mode
 
 ---
 

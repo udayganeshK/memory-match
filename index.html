@@ -10,7 +10,16 @@
     <div class="container">
         <!-- Main Menu Screen -->
         <div id="main-menu" class="screen active">
-            <h1 class="title">Memory Match</h1>
+            <!-- Game Name in Top Left -->
+            <div class="game-name-header">Memory Match</div>
+            
+            <!-- How to Play Button -->
+            <button id="how-to-play-btn" class="how-to-play-button">❓ How to Play</button>
+            
+            <div class="title-section">
+                <h1 class="title">Memory Match</h1>
+                <p class="subtitle">Test Your Memory Skills</p>
+            </div>
             
             <!-- Category Bubbles -->
             <div class="category-bubbles">
@@ -63,6 +72,30 @@
                 </div>
             </div>
             
+            <!-- Difficulty Selection -->
+            <div class="difficulty-selection">
+                <h3>Select Difficulty</h3>
+                <div class="difficulty-options">
+                    <div class="difficulty-option" data-size="16">
+                        <div class="difficulty-icon">🟢</div>
+                        <span>Easy</span>
+                        <small>4×4 (16 tiles)</small>
+                    </div>
+                    
+                    <div class="difficulty-option" data-size="24">
+                        <div class="difficulty-icon">🟡</div>
+                        <span>Medium</span>
+                        <small>4×6 (24 tiles)</small>
+                    </div>
+                    
+                    <div class="difficulty-option" data-size="36">
+                        <div class="difficulty-icon">🔴</div>
+                        <span>Hard</span>
+                        <small>6×6 (36 tiles)</small>
+                    </div>
+                </div>
+            </div>
+            
             <button id="play-btn" class="play-button" disabled>Play Now</button>
         </div>
         
@@ -97,6 +130,52 @@
                 <div class="win-buttons">
                     <button id="play-again-btn" class="play-button">Play Again</button>
                     <button id="menu-btn" class="control-button">Main Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- How to Play Modal -->
+    <div id="how-to-play-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎮 How to Play Memory Match</h2>
+                <button id="close-modal" class="close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="instruction-section">
+                    <h3>🎯 Objective</h3>
+                    <p>Find all matching pairs of cards by flipping them over two at a time.</p>
+                </div>
+                
+                <div class="instruction-section">
+                    <h3>🎮 How to Play</h3>
+                    <ol>
+                        <li><strong>Choose a Category:</strong> Select from Places 🌍, Sports 🏆, or Animals 🐾</li>
+                        <li><strong>Pick Difficulty:</strong> Easy (4×4), Medium (4×6), or Hard (6×6)</li>
+                        <li><strong>Click Cards:</strong> Tap any card to flip it and reveal the emoji</li>
+                        <li><strong>Find Matches:</strong> Click another card to find its matching pair</li>
+                        <li><strong>Keep Going:</strong> Continue until all pairs are matched!</li>
+                    </ol>
+                </div>
+                
+                <div class="instruction-section">
+                    <h3>💡 Tips</h3>
+                    <ul>
+                        <li>Use the <strong>Hint</strong> button if you're stuck (adds 2 moves)</li>
+                        <li>Try to remember card locations for better scores</li>
+                        <li>Faster completion and fewer moves = higher score!</li>
+                    </ul>
+                </div>
+                
+                <div class="instruction-section">
+                    <h3>🏆 Scoring</h3>
+                    <p>Your score is based on:</p>
+                    <ul>
+                        <li><strong>70%</strong> - Number of moves (fewer is better)</li>
+                        <li><strong>30%</strong> - Time taken (faster is better)</li>
+                    </ul>
+                    <p>Maximum scores: Easy (1000), Medium (1500), Hard (2000)</p>
                 </div>
             </div>
         </div>

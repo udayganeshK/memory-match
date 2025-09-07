@@ -1,4 +1,8 @@
 /* Reset and Base Styles */
+:root {
+    --emoji-font-size: 2.5rem; /* Will be overridden by JavaScript */
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -11,13 +15,15 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    align-items: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 2rem 0;
 }
 
 .container {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     position: relative;
     display: flex;
     justify-content: center;
@@ -41,10 +47,10 @@ body {
     display: flex;
 }
 
-/* Main Menu Styles */
-#main-menu {
+/* Title Section Styles */
+.title-section {
     text-align: center;
-    padding: 20px;
+    margin-bottom: 3rem;
 }
 
 .title {
@@ -52,7 +58,180 @@ body {
     font-weight: bold;
     color: white;
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.description {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+/* Main Menu Styles */
+#main-menu {
+    text-align: center;
+    padding: 20px;
+}
+
+/* Game Name Header - Top Left */
+.game-name-header {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+/* How to Play Button - Top Right */
+.how-to-play-button {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    padding: 0.75rem 1.5rem;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.how-to-play-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+    border-radius: 20px;
+    padding: 0;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    margin: 2rem;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    padding: 1.5rem 2rem;
+    border-radius: 18px 18px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+    padding: 2rem;
+    color: #333;
+}
+
+.instruction-section {
+    margin-bottom: 2rem;
+}
+
+.instruction-section:last-child {
+    margin-bottom: 0;
+}
+
+.instruction-section h3 {
+    color: #4facfe;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.instruction-section p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.instruction-section ol,
+.instruction-section ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.instruction-section li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.instruction-section strong {
+    color: #2980b9;
+    font-weight: 700;
 }
 
 /* Category Bubbles */
@@ -396,8 +575,11 @@ body {
 #game-screen {
     padding: 2rem;
     align-items: center;
-    justify-content: center;
-    padding-top: 2rem;
+    justify-content: flex-start;
+    padding-top: 6rem; /* Space for fixed header */
+    min-height: 100vh;
+    overflow-y: auto; /* Allow scrolling when needed */
+    gap: 2rem;
 }
 
 .game-header {
@@ -444,9 +626,9 @@ body {
 
 .game-board {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr); /* Will be overridden by JavaScript */
     gap: 0.75rem;
-    max-width: 525px;
+    max-width: 700px; /* Increased max width for larger grids */
     width: 100%;
     padding: 2rem;
     background: rgba(255, 255, 255, 0.15);
@@ -456,6 +638,8 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     margin: 0 auto;
     position: relative;
+    --card-size: 120px; /* Default card size, will be overridden by JavaScript */
+    overflow: visible; /* Ensure cards are fully visible */
 }
 
 .card {
@@ -464,7 +648,8 @@ body {
     border-radius: 20px;
     cursor: pointer;
     position: relative;
-    min-height: 100px;
+    width: var(--card-size);
+    height: var(--card-size);
     perspective: 1000px;
     transition: transform 0.6s ease;
     transform-style: preserve-3d;
@@ -590,7 +775,7 @@ body {
 .card-back {
     background: rgba(255, 255, 255, 0.95);
     color: #333;
-    font-size: 2.5rem;
+    font-size: var(--emoji-font-size);
     transform: rotateY(180deg);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
@@ -672,8 +857,7 @@ body {
     display: flex;
     gap: 1.5rem;
     margin-top: 2rem;
-    position: absolute;
-    bottom: 3rem;
+    justify-content: center;
 }
 
 .control-button {
@@ -689,7 +873,6 @@ body {
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .control-button:hover {
@@ -749,8 +932,8 @@ body {
 
 .win-stats p span {
     font-weight: 800;
-    color: #FFD700;
-    text-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+    color: white;
+    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
 }
 
 .win-buttons {
@@ -802,10 +985,120 @@ body {
     }
 }
 
+/* Difficulty Selection */
+.difficulty-selection {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.difficulty-selection h3 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.difficulty-options {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.difficulty-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem 1rem;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 100px;
+}
+
+.difficulty-option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.difficulty-option.selected {
+    border-color: white;
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+}
+
+.difficulty-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.difficulty-option span {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.difficulty-option small {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .title {
         font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .description {
+        font-size: 1rem;
+        max-width: 90%;
+        margin: 0 auto 1.5rem;
+    }
+    
+    /* Mobile adjustments for header elements */
+    .game-name-header {
+        top: 1rem;
+        left: 1rem;
+        font-size: 1.2rem;
+    }
+    
+    .how-to-play-button {
+        top: 1rem;
+        right: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Modal adjustments for mobile */
+    .modal-content {
+        margin: 1rem;
+        max-height: 90vh;
+    }
+    
+    .modal-header {
+        padding: 1rem 1.5rem;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .instruction-section h3 {
+        font-size: 1.2rem;
     }
     
     .category-bubbles {
@@ -824,10 +1117,8 @@ body {
     }
     
     .game-board {
-        grid-template-columns: repeat(3, 1fr);
-        max-width: 440px;
-        padding: 1.5rem;
-        gap: 0.5rem;
+        max-width: 95vw; /* Use viewport width for better mobile fit */
+        padding: 1rem;
     }
     
     .game-header {
@@ -855,24 +1146,23 @@ body {
     }
     
     .card-back {
-        font-size: 2.5rem;
+        font-size: calc(var(--card-size) * 0.5); /* Dynamic font size based on card size */
     }
     
     .card-pattern::after {
-        font-size: 2.5rem;
+        font-size: calc(var(--card-size) * 0.4);
     }
 }
 
 @media (max-width: 480px) {
     .game-board {
-        grid-template-columns: repeat(2, 1fr);
         max-width: 350px;
         padding: 1rem;
+        gap: 0.5rem;
     }
     
     .card {
         font-size: 1.5rem;
-        min-height: 75px;
     }
     
     .card-back {
@@ -896,6 +1186,19 @@ body {
     .game-info span {
         font-size: 0.9rem;
     }
+    
+    .difficulty-options {
+        gap: 1rem;
+    }
+    
+    .difficulty-option {
+        min-width: 80px;
+        padding: 1rem 0.75rem;
+    }
+    
+    .difficulty-selection h3 {
+        font-size: 1.3rem;
+    }
 }
 
 /* Animation for sparkles */
@@ -910,4 +1213,83 @@ body {
     font-size: 2rem;
     animation: sparkle 1s ease-in-out;
     pointer-events: none;
+}
+
+/* Enhanced Win Screen Styles */
+.win-stats {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-row {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .stat-detail {
+        text-align: center;
+    }
+    
+    .score-breakdown {
+        padding: 1rem;
+    }
+    
+    .breakdown-item {
+        font-size: 0.9rem;
+    }
+    
+.score-value {
+    font-size: 1.8rem;
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.score-breakdown {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.score-breakdown h4 {
+    margin: 0 0 1rem 0;
+    color: white;
+    text-align: center;
+    font-size: 1.1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.75rem 0;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    color: white;
+}
+
+.breakdown-item.total {
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    margin-top: 1rem;
+    padding-top: 1rem;
+    font-weight: bold;
+    font-size: 1.1rem;
 }

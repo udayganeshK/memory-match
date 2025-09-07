@@ -1,6 +1,7 @@
 class MemoryGame {
     constructor() {
         this.selectedCategory = null;
+        this.selectedDifficulty = 24; // Default to medium (4x6)
         this.gameData = {
             places: [
                 { emoji: '🗼', name: 'Eiffel Tower' },
@@ -18,7 +19,11 @@ class MemoryGame {
                 { emoji: '🏟️', name: 'Stadium' },
                 { emoji: '🎪', name: 'Circus Tent' },
                 { emoji: '🎭', name: 'Theatre' },
-                { emoji: '🏛️', name: 'Museum' }
+                { emoji: '🏛️', name: 'Museum' },
+                { emoji: '🏕️', name: 'Camping' },
+                { emoji: '🏝️', name: 'Island' },
+                { emoji: '🌁', name: 'Foggy City' },
+                { emoji: '🎢', name: 'Roller Coaster' }
             ],
             sports: [
                 { emoji: '⚽', name: 'Soccer Ball' },
@@ -36,7 +41,11 @@ class MemoryGame {
                 { emoji: '🎯', name: 'Dart Board' },
                 { emoji: '🏹', name: 'Archery' },
                 { emoji: '🎿', name: 'Skiing' },
-                { emoji: '🏄', name: 'Surfing' }
+                { emoji: '🏄', name: 'Surfing' },
+                { emoji: '🏊', name: 'Swimming' },
+                { emoji: '🚴', name: 'Cycling' },
+                { emoji: '🤸', name: 'Gymnastics' },
+                { emoji: '🏋️', name: 'Weight Lifting' }
             ],
             animals: [
                 { emoji: '🦁', name: 'Lion' },
@@ -54,7 +63,11 @@ class MemoryGame {
                 { emoji: '🦊', name: 'Fox' },
                 { emoji: '🐻', name: 'Bear' },
                 { emoji: '🐙', name: 'Octopus' },
-                { emoji: '🦋', name: 'Butterfly' }
+                { emoji: '🦋', name: 'Butterfly' },
+                { emoji: '🐬', name: 'Dolphin' },
+                { emoji: '🦈', name: 'Shark' },
+                { emoji: '🐢', name: 'Turtle' },
+                { emoji: '🦎', name: 'Lizard' }
             ]
         };
         this.cards = [];
@@ -69,6 +82,7 @@ class MemoryGame {
         
         this.initializeElements();
         this.setupEventListeners();
+        this.initializeDefaults();
     }
     
     initializeElements() {
@@ -79,6 +93,7 @@ class MemoryGame {
         
         // Main menu elements
         this.categoryOptions = document.querySelectorAll('.category-option');
+        this.difficultyOptions = document.querySelectorAll('.difficulty-option');
         this.playButton = document.getElementById('play-btn');
         
         // Game elements
@@ -95,6 +110,11 @@ class MemoryGame {
         this.finalMoves = document.getElementById('final-moves');
         this.finalTime = document.getElementById('final-time');
         this.finalScore = document.getElementById('final-score');
+        
+        // Modal elements
+        this.howToPlayButton = document.getElementById('how-to-play-btn');
+        this.modal = document.getElementById('how-to-play-modal');
+        this.closeModalButton = document.getElementById('close-modal');
     }
     
     setupEventListeners() {
@@ -105,6 +125,13 @@ class MemoryGame {
             });
         });
         
+        // Difficulty selection
+        this.difficultyOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                this.selectDifficulty(parseInt(e.currentTarget.dataset.size));
+            });
+        });
+        
         // Navigation buttons
         this.playButton.addEventListener('click', () => this.startGame());
         this.backButton.addEventListener('click', () => this.showMainMenu());
@@ -112,6 +139,31 @@ class MemoryGame {
         this.hintButton.addEventListener('click', () => this.showHint());
         this.playAgainButton.addEventListener('click', () => this.startGame());
         this.menuButton.addEventListener('click', () => this.showMainMenu());
+        
+        // Modal buttons
+        this.howToPlayButton.addEventListener('click', () => this.showModal());
+        this.closeModalButton.addEventListener('click', () => this.hideModal());
+        
+        // Close modal when clicking outside
+        this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) {
+                this.hideModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+                this.hideModal();
+            }
+        });
+        
+        // Window resize handler for responsive layout
+        window.addEventListener('resize', () => {
+            if (this.gameStarted) {
+                this.setGridSize();
+            }
+        });
     }
     
     selectCategory(category) {
@@ -125,13 +177,37 @@ class MemoryGame {
         selectedOption.classList.add('selected');
         
         this.selectedCategory = category;
-        this.playButton.disabled = false;
+        this.updatePlayButton();
         
         // Add animation effect
         selectedOption.style.transform = 'scale(1.1)';
         setTimeout(() => {
             selectedOption.style.transform = 'scale(1.05)';
         }, 200);
+    }
+    
+    selectDifficulty(size) {
+        // Remove previous selection
+        this.difficultyOptions.forEach(option => {
+            option.classList.remove('selected');
+        });
+        
+        // Add selection to clicked difficulty
+        const selectedOption = document.querySelector(`[data-size="${size}"]`);
+        selectedOption.classList.add('selected');
+        
+        this.selectedDifficulty = size;
+        this.updatePlayButton();
+        
+        // Add animation effect
+        selectedOption.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+            selectedOption.style.transform = 'scale(1.05)';
+        }, 200);
+    }
+    
+    updatePlayButton() {
+        this.playButton.disabled = !(this.selectedCategory && this.selectedDifficulty);
     }
     
     startGame() {
@@ -155,10 +231,13 @@ class MemoryGame {
     }
     
     createGameBoard() {
-        // Get category data and randomly select 8 items
+        // Calculate pairs needed based on difficulty
+        const totalPairs = this.selectedDifficulty / 2;
+        
+        // Get category data and randomly select the needed number of items
         const categoryData = this.gameData[this.selectedCategory];
         const shuffledData = [...categoryData].sort(() => Math.random() - 0.5);
-        this.currentGameItems = shuffledData.slice(0, 8);
+        this.currentGameItems = shuffledData.slice(0, totalPairs);
         
         // Create pairs
         const gameCards = [...this.currentGameItems, ...this.currentGameItems];
@@ -166,8 +245,9 @@ class MemoryGame {
         // Shuffle cards
         this.shuffleArray(gameCards);
         
-        // Clear board
+        // Clear board and set grid size
         this.gameBoard.innerHTML = '';
+        this.setGridSize();
         
         // Create card elements
         gameCards.forEach((cardData, index) => {
@@ -183,6 +263,63 @@ class MemoryGame {
                 isMatched: false
             });
         });
+    }
+    
+    setGridSize() {
+        // Define grid dimensions for each difficulty
+        const gridConfigs = {
+            16: { rows: 4, cols: 4 }, // 4x4
+            24: { rows: 4, cols: 6 }, // 4x6
+            36: { rows: 6, cols: 6 }  // 6x6
+        };
+        
+        const config = gridConfigs[this.selectedDifficulty];
+        this.gameBoard.style.gridTemplateColumns = `repeat(${config.cols}, 1fr)`;
+        this.gameBoard.style.gridTemplateRows = `repeat(${config.rows}, 1fr)`;
+        
+        // Check if we're on mobile
+        const isMobile = window.innerWidth <= 768;
+        
+        // Adjust card size and board settings based on difficulty and screen size
+        const settings = {
+            16: { 
+                cardSize: isMobile ? '80px' : '120px', 
+                maxWidth: isMobile ? '400px' : '600px', 
+                gap: isMobile ? '0.4rem' : '0.75rem' 
+            },
+            24: { 
+                cardSize: isMobile ? '60px' : '90px', 
+                maxWidth: isMobile ? '420px' : '700px', 
+                gap: isMobile ? '0.3rem' : '0.5rem' 
+            },
+            36: { 
+                cardSize: isMobile ? '50px' : '105px', 
+                maxWidth: isMobile ? '350px' : '800px', 
+                gap: isMobile ? '0.25rem' : '0.6rem' 
+            }
+        };
+        
+        const setting = settings[this.selectedDifficulty];
+        this.gameBoard.style.setProperty('--card-size', setting.cardSize);
+        this.gameBoard.style.maxWidth = setting.maxWidth;
+        this.gameBoard.style.gap = setting.gap;
+        
+        // Set font sizes for emojis based on difficulty
+        const fontSizes = {
+            16: isMobile ? '2rem' : '2.5rem',
+            24: isMobile ? '1.8rem' : '2.3rem',
+            36: isMobile ? '1.5rem' : '2.1rem'
+        };
+        
+        // Apply font size to all card-back elements
+        document.documentElement.style.setProperty('--emoji-font-size', fontSizes[this.selectedDifficulty]);
+        
+        // Adjust padding for mobile
+        if (isMobile) {
+            this.gameBoard.style.padding = '1rem';
+        } else {
+            this.gameBoard.style.padding = '2rem';
+        }
     }
     
     createCard(cardData, id) {
@@ -321,18 +458,28 @@ class MemoryGame {
     }
     
     calculateScore() {
-        // Base score of 1000 points
-        let baseScore = 1000;
+        // Base score varies by difficulty
+        const baseScores = {
+            16: 1000,  // Easy (4x4)
+            24: 1500,  // Medium (4x6)
+            36: 2000   // Hard (6x6)
+        };
+        let baseScore = baseScores[this.selectedDifficulty];
         
         // Deduct points for moves (70% weight)
-        // Perfect game would be 8 moves (minimum possible), so deduct more for extra moves
-        const minMoves = 8;
+        // Perfect game moves = number of pairs, so deduct for extra moves
+        const minMoves = this.selectedDifficulty / 2;
         const movePenalty = Math.max(0, (this.moves - minMoves) * 15);
         const moveScore = Math.max(0, baseScore * 0.7 - movePenalty);
         
         // Deduct points for time (30% weight)
-        // Target time is 30 seconds, deduct points for going over
-        const targetTime = 30;
+        // Target time varies by difficulty
+        const targetTimes = {
+            16: 30,   // 30 seconds for easy
+            24: 50,   // 50 seconds for medium
+            36: 70    // 70 seconds for hard
+        };
+        const targetTime = targetTimes[this.selectedDifficulty];
         const timePenalty = Math.max(0, (this.time - targetTime) * 5);
         const timeScore = Math.max(0, baseScore * 0.3 - timePenalty);
         
@@ -340,37 +487,35 @@ class MemoryGame {
         this.score = Math.round(moveScore + timeScore);
         return this.score;
     }
-    
-    showHint() {
-        // Find two unmatched cards with the same value
-        const unmatchedCards = this.cards.filter(card => !card.isMatched && !card.isFlipped);
+
+    winGame() {
+        this.stopTimer();
+        this.gameStarted = false;
         
-        for (let i = 0; i < unmatchedCards.length; i++) {
-            for (let j = i + 1; j < unmatchedCards.length; j++) {
-                if (unmatchedCards[i].emoji === unmatchedCards[j].emoji) {
-                    // Add hint glow effect
-                    unmatchedCards[i].element.classList.add('hint-glow');
-                    unmatchedCards[j].element.classList.add('hint-glow');
-                    
-                    setTimeout(() => {
-                        unmatchedCards[i].element.classList.remove('hint-glow');
-                        unmatchedCards[j].element.classList.remove('hint-glow');
-                    }, 2000);
-                    
-                    this.moves += 1; // Penalty for using hint
-                    this.updateMoves();
-                    
-                    // Disable hint button temporarily
-                    this.hintButton.disabled = true;
-                    this.hintButton.textContent = 'Hint Used';
-                    setTimeout(() => {
-                        this.hintButton.disabled = false;
-                        this.hintButton.textContent = 'Hint';
-                    }, 3000);
-                    
-                    return;
-                }
-            }
+        // Calculate final score
+        const finalScore = this.calculateScore();
+        
+        // Get maximum possible score for this difficulty
+        const baseScores = {
+            16: 1000,  // Easy (4x4)
+            24: 1500,  // Medium (4x6)
+            36: 2000   // Hard (6x6)
+        };
+        const maxScore = baseScores[this.selectedDifficulty];
+        
+        // Update final displays
+        this.finalMoves.textContent = this.moves;
+        this.finalTime.textContent = this.formatTime(this.time);
+        this.finalScore.textContent = `${finalScore} / ${maxScore}`;
+        
+        // Show win screen
+        this.showWinScreen();
+    }
+    
+    stopTimer() {
+        if (this.timer) {
+            clearInterval(this.timer);
+            this.timer = null;
         }
     }
     
@@ -381,64 +526,55 @@ class MemoryGame {
         }, 1000);
     }
     
-    stopTimer() {
-        if (this.timer) {
-            clearInterval(this.timer);
-            this.timer = null;
-        }
+    updateTimer() {
+        this.timerDisplay.textContent = `Time: ${this.formatTime(this.time)}`;
     }
     
     updateMoves() {
         this.movesCount.textContent = `Moves: ${this.moves}`;
     }
     
-    updateTimer() {
-        const minutes = Math.floor(this.time / 60);
-        const seconds = this.time % 60;
-        this.timerDisplay.textContent = `Time: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     }
     
-    winGame() {
-        this.stopTimer();
-        this.gameStarted = false;
+    showHint() {
+        // Find two unmatched cards with the same emoji
+        const unmatchedCards = this.cards.filter(card => !card.isMatched && !card.isFlipped);
         
-        // Calculate final score
-        const finalScore = this.calculateScore();
+        // Group cards by emoji
+        const cardGroups = {};
+        unmatchedCards.forEach(card => {
+            if (!cardGroups[card.emoji]) {
+                cardGroups[card.emoji] = [];
+            }
+            cardGroups[card.emoji].push(card);
+        });
         
-        // Update win screen with final stats
-        this.finalMoves.textContent = this.moves;
-        const minutes = Math.floor(this.time / 60);
-        const seconds = this.time % 60;
-        this.finalTime.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        
-        // Update score display
-        if (this.finalScore) {
-            this.finalScore.textContent = finalScore;
+        // Find a pair
+        let hintPair = null;
+        for (const emoji in cardGroups) {
+            if (cardGroups[emoji].length >= 2) {
+                hintPair = cardGroups[emoji].slice(0, 2);
+                break;
+            }
         }
         
-        // Show win screen after a delay
-        setTimeout(() => {
-            this.showWinScreen();
-        }, 1500);
-    }
-    
-    restartGame() {
-        this.stopTimer();
-        this.startGame();
-    }
-    
-    showMainMenu() {
-        this.stopTimer();
-        this.mainMenuScreen.classList.add('active');
-        this.gameScreen.classList.remove('active');
-        this.winScreen.classList.remove('active');
-        
-        // Reset category selection
-        this.categoryOptions.forEach(option => {
-            option.classList.remove('selected');
-        });
-        this.selectedCategory = null;
-        this.playButton.disabled = true;
+        if (hintPair) {
+            // Add penalty moves
+            this.moves += 2;
+            this.updateMoves();
+            
+            // Highlight the pair
+            hintPair.forEach(card => {
+                card.element.classList.add('hint-glow');
+                setTimeout(() => {
+                    card.element.classList.remove('hint-glow');
+                }, 2000);
+            });
+        }
     }
     
     showGameScreen() {
@@ -453,10 +589,52 @@ class MemoryGame {
         this.winScreen.classList.add('active');
     }
     
+    showMainMenu() {
+        this.stopTimer();
+        this.mainMenuScreen.classList.add('active');
+        this.gameScreen.classList.remove('active');
+        this.winScreen.classList.remove('active');
+        
+        // Reset selections
+        this.categoryOptions.forEach(option => {
+            option.classList.remove('selected');
+        });
+        this.difficultyOptions.forEach(option => {
+            option.classList.remove('selected');
+        });
+        this.selectedCategory = null;
+        this.selectedDifficulty = 24; // Reset to default
+        this.updatePlayButton();
+        
+        // Re-select default difficulty
+        const defaultDifficulty = document.querySelector('[data-size="24"]');
+        if (defaultDifficulty) {
+            defaultDifficulty.classList.add('selected');
+        }
+    }
+    
+    showModal() {
+        this.modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+    
+    hideModal() {
+        this.modal.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+    }
+    
     shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+    
+    initializeDefaults() {
+        // Set default difficulty to Medium (24 tiles)
+        const defaultDifficulty = document.querySelector('[data-size="24"]');
+        if (defaultDifficulty) {
+            defaultDifficulty.classList.add('selected');
         }
     }
 }
