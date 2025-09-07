@@ -95,8 +95,6 @@ class MemoryGame {
         this.finalMoves = document.getElementById('final-moves');
         this.finalTime = document.getElementById('final-time');
         this.finalScore = document.getElementById('final-score');
-        
-        console.log('Final score element:', this.finalScore); // Debug log
     }
     
     setupEventListeners() {
@@ -208,7 +206,6 @@ class MemoryGame {
     
     flipCard(cardId) {
         const card = this.cards[cardId];
-        console.log('Flipping card:', card); // Debug log
         
         // Prevent flipping if card is already flipped, matched, or two cards are already flipped
         if (card.isFlipped || card.isMatched || this.flippedCards.length >= 2) {
@@ -315,8 +312,6 @@ class MemoryGame {
         label.style.transform = 'translateX(-50%)';
         label.style.zIndex = '1000';
         
-        console.log('Showing label:', card.name, 'at position:', cardRect); // Debug log
-        
         // Remove label after 2 seconds
         setTimeout(() => {
             if (label.parentNode) {
@@ -409,7 +404,6 @@ class MemoryGame {
         
         // Calculate final score
         const finalScore = this.calculateScore();
-        console.log('Calculated score:', finalScore); // Debug log
         
         // Update win screen with final stats
         this.finalMoves.textContent = this.moves;
@@ -420,9 +414,6 @@ class MemoryGame {
         // Update score display
         if (this.finalScore) {
             this.finalScore.textContent = finalScore;
-            console.log('Score updated in DOM'); // Debug log
-        } else {
-            console.error('Final score element not found!'); // Debug log
         }
         
         // Show win screen after a delay
