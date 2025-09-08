@@ -79,6 +79,8 @@ class MemoryGame {
         this.gameStarted = false;
         this.score = 0;
         this.currentGameItems = [];
+        this.hintsUsed = 0;
+        this.maxHints = 0;
         
         this.initializeElements();
         this.setupEventListeners();
@@ -219,6 +221,13 @@ class MemoryGame {
         this.startTimer();
     }
     
+    restartGame() {
+        this.stopTimer();
+        this.resetGameState();
+        this.createGameBoard();
+        this.startTimer();
+    }
+    
     resetGameState() {
         this.cards = [];
         this.flippedCards = [];
@@ -226,8 +235,19 @@ class MemoryGame {
         this.moves = 0;
         this.time = 0;
         this.gameStarted = true;
+        this.hintsUsed = 0;
+        
+        // Set max hints based on difficulty
+        const hintLimits = {
+            16: 2,  // Easy - 2 hints
+            24: 3,  // Medium - 3 hints
+            36: 5   // Hard - 5 hints
+        };
+        this.maxHints = hintLimits[this.selectedDifficulty];
+        
         this.updateMoves();
         this.updateTimer();
+        this.updateHintButton();
     }
     
     createGameBoard() {
@@ -534,6 +554,19 @@ class MemoryGame {
         this.movesCount.textContent = `Moves: ${this.moves}`;
     }
     
+    updateHintButton() {
+        const hintsRemaining = this.maxHints - this.hintsUsed;
+        if (hintsRemaining > 0) {
+            this.hintButton.textContent = `Hint (${hintsRemaining})`;
+            this.hintButton.disabled = false;
+            this.hintButton.style.opacity = '1';
+        } else {
+            this.hintButton.textContent = 'No Hints Left';
+            this.hintButton.disabled = true;
+            this.hintButton.style.opacity = '0.5';
+        }
+    }
+    
     formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -541,6 +574,11 @@ class MemoryGame {
     }
     
     showHint() {
+        // Check if hints are available
+        if (this.hintsUsed >= this.maxHints) {
+            return; // No more hints available
+        }
+        
         // Find two unmatched cards with the same emoji
         const unmatchedCards = this.cards.filter(card => !card.isMatched && !card.isFlipped);
         
@@ -563,9 +601,13 @@ class MemoryGame {
         }
         
         if (hintPair) {
+            // Increment hints used
+            this.hintsUsed++;
+            
             // Add penalty moves
             this.moves += 2;
             this.updateMoves();
+            this.updateHintButton();
             
             // Highlight the pair
             hintPair.forEach(card => {
@@ -611,6 +653,11 @@ class MemoryGame {
         if (defaultDifficulty) {
             defaultDifficulty.classList.add('selected');
         }
+        
+        // Reset hint button
+        this.hintButton.textContent = 'Hint';
+        this.hintButton.disabled = false;
+        this.hintButton.style.opacity = '1';
     }
     
     showModal() {
